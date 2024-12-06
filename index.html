@@ -99,7 +99,7 @@
             
             <h3 id="Introduction"><b>Introduction</b></h3>
              <p class="ex1">
-                <pre>
+                <pre id="Introduction_InText">
     In my study I will be talking about the main factor that can decrease an engine's performance over time, which
     is wear and tear caused by poor maintenance in the form of unregular filter replacement. Another area that 
     was of focus during my research was on how air humidity affects performance figures of engines and how it participates
@@ -109,7 +109,7 @@
             <hr>
             <h3 id="Analysis and discussion"><b>Analysis and discussion</b></h3>
              <p class="ex1">
-                <pre>
+                <pre id="Analysis_InText">
     Accumulation of particulate matter in an engine’s air filter’s is the key area that causes wear and tear inside an 
     engine this is proven in a 2018 study which found that dust, which is sucked with air into engine cylinders, only
     partly takes part in destructive influence on engine elements. The authors of <a href= "#[1]">[1]</a>state that about 30% of the 
@@ -170,7 +170,7 @@
             
             <h3 id="Conclusion"><b>Conclusion</b></h3>
              <p class="ex1">
-                <pre>
+                <pre id="Conclusion_InText">
     In conclusion I believe my research has identified what areas of air filters need improvements to benefit customers as 
     air filtration is one of the key parts of maintaining our engines healthy, another area which may need improvements is 
     an improvement to moisture filtration as it can clog up air filters and shorten their life span. This research can be 
@@ -210,6 +210,89 @@
            </P>
                  
            <hr>
+
+<!-- //////////////////////////////////////////////////////////////////////////////// -->
+  <!-- ////////////////////////////// Adding last update ////////////////////////////// -->
+  <!-- //////////////////////////////////////////////////////////////////////////////// -->
+    <!-- Last commit time display -->
+<div id="last-updated">Loading last update time...</div>
+<!-- Verify Button -->
+<button onclick="verifyLastUpdatedTime()" style="display: block; margin: 10px auto; padding: 8px 16px;">
+    Verify Last Modified Time
+</button>
+<script>
+    async function getLastUpdatedTime() {
+        const username = 'FEPSFY6866934';
+        const repo = 'FY6866934';
+       
+        const url = `https://api.github.com/repos/${username}/${repo}/commits`;
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json',
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Error fetching data: ${response.status} - ${response.statusText}`);
+            }
+            const commits = await response.json();
+            if (commits && commits.length > 0) {
+                const lastCommitDate = new Date(commits[0].commit.committer.date);
+               
+                // Displaying the time on load
+                document.getElementById('last-updated').innerText = `Last Modified Time: ${lastCommitDate.toLocaleString()}`;
+            } else {
+                document.getElementById('last-updated').innerText = 'No commits found in the repository.';
+            }
+        } catch (error) {
+            console.error('Error fetching the last updated time:', error);
+            document.getElementById('last-updated').innerText = 'Error fetching update time. Please check the repository details.';
+        }
+    }
+    // Function to verify the last update time by re-fetching it from the API
+    async function verifyLastUpdatedTime() {
+        document.getElementById('last-updated').innerText = 'Verifying...';
+        await getLastUpdatedTime();
+        alert("Last modified time has been successfully verified from GitHub API.");
+    }
+    // Initial load to display the time on page load
+    window.onload = getLastUpdatedTime;
+</script>
+            
+ <!-- //////////////////////////////////////////////////////////////////////////////// -->
+  <!-- ////////////////////////////// Word count function ////////////////////////////// -->
+  <!-- //////////////////////////////////////////////////////////////////////////////// -->
+<!-- Placeholder for total word count -->
+<p id="totalWordCount"></p>
+<hr>
+<script>
+  // Function to calculate and display word count for a specified section
+  function displayWordCount(sectionId, outputId) {
+    // Get the text content from the specified section
+    const text = document.getElementById(sectionId).textContent;
+    // Split text into words based on spaces and filter out any empty strings
+    const wordArray = text.trim().split(/\s+/);
+    // Count the words
+    const wordCount = wordArray.length;
+    // Return the word count for summing purposes
+    return wordCount;
+  }
+  // Function to calculate and display total word count from selected sections
+  function displayTotalWordCount() {
+    // Calculate word count for each section and accumulate the total
+    const IntroductionCount = displayWordCount("Introduction_InText");
+    const AnalysisCount = displayWordCount("Analysis_InText");
+    const ConclusionCount = displayWordCount("Conclusion_InText");
+    
+    // Calculate the sum of all selected sections
+    const totalWordCount = IntroductionCount + AnalysisCount + ConclusionCount;
+    // Display the total word count
+    document.getElementById("totalWordCount").innerText = `Total word count: ${totalWordCount}`;
+  }
+  // Run the function for specific sections and display total count when the page loads
+  window.onload = displayTotalWordCount;
+</script>
             
         </body>
     </head>
